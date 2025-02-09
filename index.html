@@ -185,20 +185,20 @@
         reply: function(answer) {
           const lower = answer.toLowerCase();
           if(lower.includes("sanu") || lower.includes("akriti") || lower.includes("aaku") ){
-            return "Okay you're my boss's Sanu";
+            return "Okay you're my boss's Sanu ❤️";
           } else {
             return "Hmm, i think there's something wrong with your internet. 😏";
           }
         }
       },
       {
-        question: "Alright, listen upbeautiful! My boss has been thinking about this all day… If he were a teddy bear, would you hug him more or tease him more? hug or tease ?",
+        question: "Alright, listen up beautiful! My boss has been thinking about this all day… If he were a teddy bear, would you hug him more or tease him more? hug or tease ?",
         reply: function(answer) {
           const lower = answer.toLowerCase();
           if(lower.includes("hug") || lower.includes("tease") ){
-            return "I always suspected there was a little magic in you!";
+            return "I always suspected there was a little magic in you! 🪄";
           } else {
-            return "Hmm, Okay i need to take this in account";
+            return "Hmm, Okay i need to take this in account 😏";
           }
         }
       },
@@ -207,9 +207,9 @@
         reply: function(answer) {
           const lower = answer.toLowerCase();
           if(lower.includes("lot") || lower.includes("more")){
-            return "Got it, Amazing ";
+            return "Got it, Amazing 🙈";
           } else {
-            return "I am noting every details.";
+            return "I am noting every details. 😕";
           }
         }
       },
@@ -217,8 +217,8 @@
         question: "I’ve been in charge of protecting his heart, and it’s all yours now. would you keep it safe?, Yes or No",
         reply: function(answer) {
           const lower = answer.toLowerCase();
-          if(lower.includes("Yes") || lower.includes("safe") || lower.includes("safest")){
-            return "Ah, indeed, I am happy for him!, you have won his heart and something else";
+          if(lower.includes("yes") || lower.includes("safe") || lower.includes("safest")){
+            return "Ah, indeed, I am happy for him!, you have won his heart and something else 🥳";
           } else {
             return "Hmm, Okay... ";
           }
@@ -282,7 +282,7 @@
     });
   } else {
     // Final romantic message when conversation is complete.
-        const finalMessage = "Happy teddy Day. . .  from Snuggle 🙈";
+        const finalMessage = "Happy teddy Day. . .  from Snuggles 🙈";
     addMessage(finalMessage, "teddy", () => {
       // After a short delay, open the modal.
       setTimeout(showFinalModal, 1000);
@@ -329,7 +329,7 @@ function showFinalModal() {
   modal.style.display = "block";
   const finalTextEl = document.getElementById("finalMessage");
   // 'typeWriter' should already exist in your code; this animates the text "message"
-  typeWriter("I am your love Swikar, sanu, I was just Disguised as Snuggles. Here's your gift. Happy Teddy Day mu love ❤️", finalTextEl, 100);
+  typeWriter("I am your love Swikar, sanu, I was just Disguised as Snuggles. Here's your gift. Happy Teddy Day my love ❤️", finalTextEl, 100);
 }
 
 // Close modal when clicking the close button
