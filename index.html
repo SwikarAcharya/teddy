@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Teddy Day Love Chat</title>
+  <!-- Google Fonts for a playful, romantic look -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient-start: #ffccbc;
+      --bg-gradient-end: #ffe0b2;
+      --accent-color: #d2691e;
+      --text-color: #333;
+      --chat-bg: #fff;
+      --input-bg: #f9f9f9;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      font-family: 'Roboto', sans-serif;
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 100%;
+      max-width: 600px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .teddy-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .teddy-header img {
+      width: 150px;
+      max-width: 80%;
+    }
+    .chat-box {
+      background: var(--chat-bg);
+      border-radius: 10px;
+      padding: 15px;
+      min-height: 200px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 10px;
+      overflow-y: auto;
+      max-height: 60vh;
+    }
+    .message {
+      margin: 10px 0;
+      line-height: 1.4;
+    }
+    .message.teddy {
+      color: var(--accent-color);
+      text-align: left;
+    }
+    .message.user {
+      text-align: right;
+      color: #555;
+    }
+    .input-area {
+      display: flex;
+      gap: 10px;
+    }
+    .input-area input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background: var(--input-bg);
+      font-size: 1em;
+    }
+    .input-area button {
+      padding: 10px 15px;
+      background: var(--accent-color);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .modal {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    border-radius: 10px;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    cursor: pointer;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="teddy-header">
+      <!-- Teddy bear image (feel free to change the URL) -->
+      <img src="https://i.ibb.co/s9XPjmVm/penguin.png" alt="Cute Teddy Bear">
+    </div>
+    <div class="chat-box" id="chatBox">
+      <!-- Chat messages will appear here -->
+    </div>
+    <div class="input-area" id="inputArea" style="display: none;">
+      <input type="text" id="userInput" placeholder="Type your message...">
+      <button id="sendButton">Send</button>
+    </div>
+  </div>
+
+  <!-- Final Modal with Image and Typewriter Text -->
+<div id="finalModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="modalClose">&times;</span>
+      <!-- Change the image URL if desired -->
+      <img src="https://i.ibb.co/RM8MNKM/penguin-removebg-preview.png" alt="Romantic Teddy" style="width:100%; border-radius: 10px;">
+      <p id="finalMessage" style="margin-top: 15px; font-size: 1.1em; color: var(--accent-color);"></p>
+    </div>
+  </div>
+  
+
+  <script>
+    /* 
+      Typewriter effect: Displays text one character at a time.
+      Parameters:
+        text     - the full text to display
+        element  - the DOM element in which to type the text
+        speed    - the delay (in milliseconds) between each character
+        callback - optional function to call when done
+    */
+    function typeWriter(text, element, speed, callback) {
+      let i = 0;
+      element.innerHTML = "";
+      let interval = setInterval(() => {
+        if (i < text.length) {
+          element.innerHTML += text.charAt(i);
+          i++;
+        } else {
+          clearInterval(interval);
+          if(callback) callback();
+        }
+      }, speed);
+    }
+
+    // Append a message to the chat box and animate it using typewriter effect.
+    function addMessage(text, sender, callback) {
+      const chatBox = document.getElementById("chatBox");
+      const messageDiv = document.createElement("div");
+      messageDiv.className = "message " + sender;
+      chatBox.appendChild(messageDiv);
+      // Auto-scroll to the bottom
+      chatBox.scrollTop = chatBox.scrollHeight;
+      typeWriter(text, messageDiv, 50, callback);
+    }
+
+    // Conversation stages: each stage contains a question and a reply function that checks keywords.
+    let conversationStage = 0;
+    const conversationStages = [
+      {
+        question: "What's your name?",
+        reply: function(answer) {
+          const lower = answer.toLowerCase();
+          if(lower.includes("sanu") || lower.includes("akriti") || lower.includes("aaku") ){
+            return "Okay you're my boss's Sanu";
+          } else {
+            return "Hmm, i think there's something wrong with your internet. 😏";
+          }
+        }
+      },
+      {
+        question: "Alright, listen upbeautiful! My boss has been thinking about this all day… If he were a teddy bear, would you hug him more or tease him more? hug or tease ?",
+        reply: function(answer) {
+          const lower = answer.toLowerCase();
+          if(lower.includes("hug") || lower.includes("tease") ){
+            return "I always suspected there was a little magic in you!";
+          } else {
+            return "Hmm, Okay i need to take this in account";
+          }
+        }
+      },
+      {
+        question: "He wanted to ask this himself, but I had to step in for security reasons. How much do you love my, ‘a lot’ or ‘more than anything’?",
+        reply: function(answer) {
+          const lower = answer.toLowerCase();
+          if(lower.includes("lot") || lower.includes("more")){
+            return "Got it, Amazing ";
+          } else {
+            return "I am noting every details.";
+          }
+        }
+      },
+      {
+        question: "I’ve been in charge of protecting his heart, and it’s all yours now. would you keep it safe?, Yes or No",
+        reply: function(answer) {
+          const lower = answer.toLowerCase();
+          if(lower.includes("Yes") || lower.includes("safe") || lower.includes("safest")){
+            return "Ah, indeed, I am happy for him!, you have won his heart and something else";
+          } else {
+            return "Hmm, Okay... ";
+          }
+        }
+      }
+    ];
+
+    // Teddy's opening messages (with typewriter animation)
+    const teddyMessages = [
+      "Hi...",
+      "I'm Gangstar.. Snuggles, I am my boss's assistant and BODYGUARD",
+      "I have been deployed by a guy who loves a girl very, very much.",
+      "I'm here to share smiles, giggles, and a sprinkle of romance with you in his behalf.",
+      "But, but, but, you need to pass the interrogation."
+    ];
+
+    // Start the conversation by sequentially displaying the opening messages.
+    function startConversation() {
+      document.getElementById("inputArea").style.display = "none";
+      let index = 0;
+      function nextMessage() {
+        if(index < teddyMessages.length) {
+          addMessage(teddyMessages[index], "teddy", () => {
+            index++;
+            setTimeout(nextMessage, 800);
+          });
+        } else {
+          // Begin interactive conversation after greetings.
+          askQuestion();
+        }
+      }
+      nextMessage();
+    }
+
+    // Ask the current question from the conversationStages.
+    // function askQuestion() {
+    //   if(conversationStage < conversationStages.length) {
+    //     const question = conversationStages[conversationStage].question;
+    //     addMessage(question, "teddy", () => {
+    //       // Reveal the input area so the user can reply.
+    //       document.getElementById("inputArea").style.display = "flex";
+    //       document.getElementById("userInput").focus();
+    //     });
+    //   } else {
+    //     // Final romantic message when conversation is complete.
+    //     addMessage(finalMessage, "teddy");
+    //     document.getElementById("inputArea").style.display = "none";
+    //   }
+    // }
+
+
+
+
+    function askQuestion() {
+  if (conversationStage < conversationStages.length) {
+    const question = conversationStages[conversationStage].question;
+    addMessage(question, "teddy", () => {
+      // Reveal the input area so the user can reply.
+      document.getElementById("inputArea").style.display = "flex";
+      document.getElementById("userInput").focus();
+    });
+  } else {
+    // Final romantic message when conversation is complete.
+        const finalMessage = "Happy teddy Day. . .  from Snuggle 🙈";
+    addMessage(finalMessage, "teddy", () => {
+      // After a short delay, open the modal.
+      setTimeout(showFinalModal, 1000);
+    });
+    document.getElementById("inputArea").style.display = "none";
+  }
+}
+
+
+
+    // Process the user’s input when the Send button is clicked.
+    document.getElementById("sendButton").addEventListener("click", function() {
+      const userInput = document.getElementById("userInput");
+      const text = userInput.value.trim();
+      if(text === "") return;
+      // Hide the input area while processing.
+      document.getElementById("inputArea").style.display = "none";
+      addMessage(text, "user", () => {
+        // Evaluate the response using the current conversation stage's logic.
+        const reply = conversationStages[conversationStage].reply(text);
+        setTimeout(() => {
+          addMessage(reply, "teddy", () => {
+            conversationStage++;
+            // Proceed to the next question after a short delay.
+            setTimeout(askQuestion, 1000);
+          });
+        }, 500);
+      });
+      userInput.value = "";
+    }
+);
+
+
+    
+
+    // Start the sequence when the page loads.
+    window.onload = function() {
+      startConversation();
+    };
+
+    // Function to show the final modal with typewriter text
+function showFinalModal() {
+  const modal = document.getElementById("finalModal");
+  modal.style.display = "block";
+  const finalTextEl = document.getElementById("finalMessage");
+  // 'typeWriter' should already exist in your code; this animates the text "message"
+  typeWriter("I am your love Swikar, sanu, I was just Disguised as Snuggles. Here's your gift. Happy Teddy Day mu love ❤️", finalTextEl, 100);
+}
+
+// Close modal when clicking the close button
+document.getElementById("modalClose").addEventListener("click", function() {
+  document.getElementById("finalModal").style.display = "none";
+});
+
+// In your conversation flow, after the final reply, call the modal
+// For example, after displaying the last teddy message, add:
+
+
+  </script>
+</body>
+</html>
