@@ -167,17 +167,6 @@
     </br>
     <button id="soundButton">🔇</button> <div class="teddy-header">
 
-
-
-    <!-- <div class="container">
-      <button id="soundButton">🔊</button> <div class="teddy-header">
-          </div>
-      <div class="chat-box" id="chatBox">
-          </div>
-      <div class="input-area" id="inputArea" style="display: none;">
-          </div>
-    </div> -->
-
     <div class="chat-box" id="chatBox">
       <!-- Chat messages will appear here -->
     </div>
@@ -207,20 +196,6 @@
         speed    - the delay (in milliseconds) between each character
         callback - optional function to call when done
     */
-
-
-    // let typeSound = new Audio("typing-sound.mp3"); // Replace with your sound file
-    //     typeSound.loop = true; // Loop the sound
-    //     let isTypingSoundPlaying = false;
-    //     let soundEnabled = false; // Initially sound is disabled
-    //     // Initialize sound button text on load:
-    //     document.addEventListener('DOMContentLoaded', () => {
-    //         const soundButton = document.getElementById("soundButton");
-    //         soundButton.textContent = "🔇"; // Set to muted initially
-    //     });
-
-
-    // Update the sound control logic with these changes:
 
 let typeSound = new Audio("typing-sound.mp3");
 typeSound.loop = true;
@@ -252,35 +227,6 @@ soundButton.addEventListener("click", () => {
                 isTypingSoundPlaying = true;
             }
         }
-
-
-        // function typeWriter(text, element, speed, callback) {
-        //     let i = 0;
-        //     element.innerHTML = "";
-        //     let interval = setInterval(() => {
-        //         if (i < text.length) {
-        //             element.innerHTML += text.charAt(i);
-        //             i++;
-        //             if (soundEnabled){
-        //               startTypingSound(); // Try to play on each character
-        //             }
-
-
-        //             if (!isTypingSoundPlaying) {
-        //                 typeSound.play();
-        //                 isTypingSoundPlaying = true;
-        //             }
-
-        //         } else {
-        //             clearInterval(interval);
-        //             typeSound.pause();
-        //             typeSound.currentTime = 0;
-        //             isTypingSoundPlaying = false;
-        //             if (callback) callback();
-        //         }
-        //     }, speed);
-        // }
-
 
         function typeWriter(text, element, speed, callback) {
     let i = 0;
@@ -482,40 +428,6 @@ soundButton.addEventListener("click", () => {
       userInput.value = "";
     },user1Icon
     );
-
-     // Sound Button Logic
-    //  const soundButton = document.getElementById("soundButton");
-    //     soundButton.addEventListener("click", () => {
-    //         soundEnabled = !soundEnabled;
-    //         soundButton.textContent = soundEnabled ? "🔊" : "🔇";
-
-    //         if (soundEnabled) {
-
-    //             if (!isTypingSoundPlaying) {
-    //                 startTypingSound(); // Call startTypingSound to handle play logic
-    //             }
-    //         } else {
-    //             typeSound.pause();
-    //             typeSound.currentTime = 0;
-    //             isTypingSoundPlaying = false;
-    //         }
-    //     });
-
-
-//     const soundButton = document.getElementById("soundButton");
-// soundButton.addEventListener("click", () => {
-//     soundEnabled = !soundEnabled;
-//     soundButton.textContent = soundEnabled ? "🔊" : "🔇";
-
-//     if (!soundEnabled) {
-//         // Only handle stopping the sound when muting
-//         typeSound.pause();
-//         typeSound.currentTime = 0;
-//         isTypingSoundPlaying = false;
-//     }
-//     // Removed the code that tried to start sound here
-// });
-
   
     // Start the sequence when the page loads.
     window.onload = function() {
@@ -528,7 +440,7 @@ soundButton.addEventListener("click", () => {
     modal.style.display = "block";
     const finalTextEl = document.getElementById("finalMessage");
     // 'typeWriter' should already exist in your code; this animates the text "message"
-    if (sanu){
+    if (sanu == true ){
       typeWriter("I am your love Swikar, sanu, I was just Disguised as Snuggles. Here's your gift. Happy Teddy Day my love ❤️", finalTextEl, 100);
     }
     else {
