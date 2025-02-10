@@ -202,6 +202,7 @@ typeSound.loop = true;
 let isTypingSoundPlaying = false;
 let soundEnabled = false; // Start with sound disabled
 let sanu = false;
+let usersanu = false;
 
 // Modified sound button handler
 const soundButton = document.getElementById("soundButton");
@@ -291,6 +292,7 @@ soundButton.addEventListener("click", () => {
     const teddyIcon = "🐧"; // Teddy icon
         const userIcon = "👤"; // Default user icon
         const user1Icon = "❤️";
+        let currentIcon = userIcon; // Default user icon
 
     const conversationStages = [
     {
@@ -357,7 +359,7 @@ soundButton.addEventListener("click", () => {
     // Teddy's opening messages (with typewriter animation)
     const teddyMessages = [
       "Hi...",
-      "I'm Gangstar.. Snuggles, I am my boss's assistant and BODYGUARD",
+      "I'm a gangstar 🔫.. Snuggles, I am my boss's assistant and BODYGUARD",
       "I have been deployed by a guy who loves a girl very, very much.",
       "I'm here to share smiles, giggles, and a sprinkle of romance with you in his behalf, if and only if you are the right person.",
       "But, but, but, you need to pass the interrogation."
@@ -409,8 +411,9 @@ soundButton.addEventListener("click", () => {
       document.getElementById("inputArea").style.display = "none";
 
 
-      let currentIcon = userIcon; // Default user icon
+      
             if (conversationStage === 0 && (text.toLowerCase().includes("sanu") || text.toLowerCase().includes("akriti") || text.toLowerCase().includes("aaku"))) {
+              usersanu == true;
                 currentIcon = user1Icon;
             }
 
