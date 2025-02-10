@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Teddy Day Love Chat</title>
-  <!-- Google Fonts for a playful, romantic look -->
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -114,15 +113,71 @@
     color: black;
     cursor: pointer;
 }
+        .message-container {
+            display: flex;
+            align-items: flex-start; /* Align icon and text to top */
+            margin-bottom: 10px;
+        }
+
+        .message-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            display: flex; /* Use flexbox for centering */
+            align-items: center;
+            justify-content: center; /* Center horizontally and vertically */
+            font-size: 20px; /* Adjust emoji size */
+        }
+        .message.teddy .message-container{
+            flex-direction: row;
+        }
+        .message.user .message-container{
+            flex-direction: row-reverse;
+        }
+        .message-container .message-content{
+            background: var(--chat-bg);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #soundButton {
+            position: absolute; /* Or relative, adjust as needed */
+            top: 20px; /* Adjust position */
+            right: 20px; /* Adjust position */
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px; /* Adjust size */
+            color: #888; /* Adjust color */
+        }
+        #soundButton:focus{
+            outline: none;
+        }
 
   </style>
 </head>
 <body>
   <div class="container">
+
     <div class="teddy-header">
       <!-- Teddy bear image (feel free to change the URL) -->
       <img src="https://i.ibb.co/s9XPjmVm/penguin.png" alt="Cute Teddy Bear">
     </div>
+    </br>
+    <button id="soundButton">🔇</button> <div class="teddy-header">
+
+
+
+    <!-- <div class="container">
+      <button id="soundButton">🔊</button> <div class="teddy-header">
+          </div>
+      <div class="chat-box" id="chatBox">
+          </div>
+      <div class="input-area" id="inputArea" style="display: none;">
+          </div>
+    </div> -->
+
     <div class="chat-box" id="chatBox">
       <!-- Chat messages will appear here -->
     </div>
@@ -152,75 +207,202 @@
         speed    - the delay (in milliseconds) between each character
         callback - optional function to call when done
     */
-    function typeWriter(text, element, speed, callback) {
-      let i = 0;
-      element.innerHTML = "";
-      let interval = setInterval(() => {
-        if (i < text.length) {
-          element.innerHTML += text.charAt(i);
-          i++;
-        } else {
-          clearInterval(interval);
-          if(callback) callback();
-        }
-      }, speed);
+
+
+    // let typeSound = new Audio("typing-sound.mp3"); // Replace with your sound file
+    //     typeSound.loop = true; // Loop the sound
+    //     let isTypingSoundPlaying = false;
+    //     let soundEnabled = false; // Initially sound is disabled
+    //     // Initialize sound button text on load:
+    //     document.addEventListener('DOMContentLoaded', () => {
+    //         const soundButton = document.getElementById("soundButton");
+    //         soundButton.textContent = "🔇"; // Set to muted initially
+    //     });
+
+
+    // Update the sound control logic with these changes:
+
+let typeSound = new Audio("typing-sound.mp3");
+typeSound.loop = true;
+let isTypingSoundPlaying = false;
+let soundEnabled = false; // Start with sound disabled
+let sanu = false;
+
+// Modified sound button handler
+const soundButton = document.getElementById("soundButton");
+soundButton.addEventListener("click", () => {
+    soundEnabled = !soundEnabled;
+    soundButton.textContent = soundEnabled ? "🔊" : "🔇";
+    
+    // Immediately stop sound when disabling
+    if (!soundEnabled && isTypingSoundPlaying) {
+        typeSound.pause();
+        typeSound.currentTime = 0;
+        isTypingSoundPlaying = false;
     }
+});
+
+
+
+        function startTypingSound() {
+            if (soundEnabled && !isTypingSoundPlaying) { // Check BOTH conditions
+                typeSound.play().catch(error => {
+                    console.error("Autoplay prevented:", error);
+                });
+                isTypingSoundPlaying = true;
+            }
+        }
+
+
+        // function typeWriter(text, element, speed, callback) {
+        //     let i = 0;
+        //     element.innerHTML = "";
+        //     let interval = setInterval(() => {
+        //         if (i < text.length) {
+        //             element.innerHTML += text.charAt(i);
+        //             i++;
+        //             if (soundEnabled){
+        //               startTypingSound(); // Try to play on each character
+        //             }
+
+
+        //             if (!isTypingSoundPlaying) {
+        //                 typeSound.play();
+        //                 isTypingSoundPlaying = true;
+        //             }
+
+        //         } else {
+        //             clearInterval(interval);
+        //             typeSound.pause();
+        //             typeSound.currentTime = 0;
+        //             isTypingSoundPlaying = false;
+        //             if (callback) callback();
+        //         }
+        //     }, speed);
+        // }
+
+
+        function typeWriter(text, element, speed, callback) {
+    let i = 0;
+    element.innerHTML = "";
+    let interval = setInterval(() => {
+        if (i < text.length) {
+            // Check sound state before adding each character
+            if (soundEnabled && !isTypingSoundPlaying) {
+                typeSound.play().catch(error => {
+                    console.error("Audio play failed:", error);
+                });
+                isTypingSoundPlaying = true;
+            }
+            
+            element.innerHTML += text.charAt(i);
+            i++;
+            
+            // Stop sound if disabled during typing
+            if (!soundEnabled && isTypingSoundPlaying) {
+                typeSound.pause();
+                typeSound.currentTime = 0;
+                isTypingSoundPlaying = false;
+            }
+        } else {
+            clearInterval(interval);
+            typeSound.pause();
+            typeSound.currentTime = 0;
+            isTypingSoundPlaying = false;
+            if (callback) callback();
+        }
+    }, speed);
+}
 
     // Append a message to the chat box and animate it using typewriter effect.
-    function addMessage(text, sender, callback) {
-      const chatBox = document.getElementById("chatBox");
-      const messageDiv = document.createElement("div");
-      messageDiv.className = "message " + sender;
-      chatBox.appendChild(messageDiv);
-      // Auto-scroll to the bottom
-      chatBox.scrollTop = chatBox.scrollHeight;
-      typeWriter(text, messageDiv, 50, callback);
-    }
+    function addMessage(text, sender, callback, icon) {
+            const chatBox = document.getElementById("chatBox");
+            const messageDiv = document.createElement("div");
+            messageDiv.className = "message " + sender;
+
+            const messageContainer = document.createElement("div"); // New container
+            messageContainer.className = "message-container";
+            messageDiv.appendChild(messageContainer);
+
+            const iconDiv = document.createElement("div");
+            iconDiv.className = "message-icon";
+            iconDiv.textContent = icon; // Set emoji as text content
+            messageContainer.appendChild(iconDiv);
+
+            const messageContent = document.createElement("div");
+            messageContent.className = "message-content";
+            messageContainer.appendChild(messageContent);
+
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            typeWriter(text, messageContent, 50, callback);
+
+            // Type in the messageContent div
+        }
 
     // Conversation stages: each stage contains a question and a reply function that checks keywords.
     let conversationStage = 0;
+    const teddyIcon = "🐧"; // Teddy icon
+        const userIcon = "👤"; // Default user icon
+        const user1Icon = "❤️";
+
     const conversationStages = [
+    // {
+    //         question: "What's your name?, Just give me the name only 📝",
+    //         reply: function(answer) {
+    //             const lower = answer.toLowerCase().trim();
+    //             if (lower==("sanu") || lower==("akriti") || lower==("aaku")) {
+    //               sanu == true;
+    //                 return "Okay you could be the one 🤭 .... or couldn't...";
+    //             } else {
+    //                 return "Hmm, i think there's something here... Anyways let's continue. 😏";
+    //             }
+    //         }
+    //     },
+
+    //   {
+    //     question: "Alright, listen up beautiful! Boss has been thinking about this all day… If he were a teddy bear, would you hug him more or tease him more? hug or tease ?",
+    //     reply: function(answer) {
+    //       const lower = answer.toLowerCase();
+    //       if(lower.includes("hug") || lower.includes("tease") ){
+    //         return "I always suspected there was a little magic in you! 🪄";
+    //       } else {
+    //         return "Hmm, Okay i need to take this in account. 😏";
+    //       }
+    //     }
+    //   },
+    //   {
+    //     question: "He wanted to ask this himself, but I had to step in for security reasons. How much do you love my boss, ‘a lot’ or ‘more than anything’ or ‘0’ ?",
+    //     reply: function(answer) {
+    //       const lower = answer.toLowerCase();
+    //       if(lower.includes("lot") || lower.includes("more")){
+    //         return "Got it, Amazing 🙈";
+    //       } else {
+    //         return "I am noting every details. 😕";
+    //       }
+    //     }
+    //   },
+    //   {
+    //     question: "I’ve been in charge of protecting his heart, and  if it’s all yours now. would you keep it safe?, Yes or No",
+    //     reply: function(answer) {
+    //       const lower = answer.toLowerCase();
+    //       if(lower.includes("yes") || lower.includes("safe") || lower.includes("safest")){
+    //         return "Ah, indeed, A final and ultimate test. 🕵🏻";
+    //       } else {
+    //         return "Hmm, Okay... On to the ultimate one. 🤔";
+    //       }
+    //     }
+    //   },
       {
-        question: "What's your name?",
+        question: "Input any four numbers. 👀",
         reply: function(answer) {
-          const lower = answer.toLowerCase();
-          if(lower.includes("sanu") || lower.includes("akriti") || lower.includes("aaku") ){
-            return "Okay you're my boss's Sanu ❤️";
+          const lower = answer;
+          if(lower == 1049 || lower == 1210 || lower == 1207 || lower == 1211  || lower == "0709"  || lower == "0917"  || lower == "0325" || lower == "0825"){
+            sanu == true;
+            return "Ah, interesting choice. Final reports coming up.. 📨";
           } else {
-            return "Hmm, i think there's something wrong with your internet. 😏";
-          }
-        }
-      },
-      {
-        question: "Alright, listen up beautiful! My boss has been thinking about this all day… If he were a teddy bear, would you hug him more or tease him more? hug or tease ?",
-        reply: function(answer) {
-          const lower = answer.toLowerCase();
-          if(lower.includes("hug") || lower.includes("tease") ){
-            return "I always suspected there was a little magic in you! 🪄";
-          } else {
-            return "Hmm, Okay i need to take this in account 😏";
-          }
-        }
-      },
-      {
-        question: "He wanted to ask this himself, but I had to step in for security reasons. How much do you love my boss, ‘a lot’ or ‘more than anything’?",
-        reply: function(answer) {
-          const lower = answer.toLowerCase();
-          if(lower.includes("lot") || lower.includes("more")){
-            return "Got it, Amazing 🙈";
-          } else {
-            return "I am noting every details. 😕";
-          }
-        }
-      },
-      {
-        question: "I’ve been in charge of protecting his heart, and it’s all yours now. would you keep it safe?, Yes or No",
-        reply: function(answer) {
-          const lower = answer.toLowerCase();
-          if(lower.includes("yes") || lower.includes("safe") || lower.includes("safest")){
-            return "Ah, indeed, I am happy for him!, you have won his heart and something else 🥳";
-          } else {
-            return "Hmm, Okay... ";
+            sanu == false;
+            return "Hmm, I am done with the interrogations. 🗒️";
           }
         }
       }
@@ -229,10 +411,10 @@
     // Teddy's opening messages (with typewriter animation)
     const teddyMessages = [
       "Hi...",
-      "I'm Gangstar.. Snuggles, I am my boss's assistant and BODYGUARD",
-      "I have been deployed by a guy who loves a girl very, very much.",
-      "I'm here to share smiles, giggles, and a sprinkle of romance with you in his behalf.",
-      "But, but, but, you need to pass the interrogation."
+      // "I'm Gangstar.. Snuggles, I am my boss's assistant and BODYGUARD",
+      // "I have been deployed by a guy who loves a girl very, very much.",
+      // "I'm here to share smiles, giggles, and a sprinkle of romance with you in his behalf, if and only if you are the right person.",
+      // "But, but, but, you need to pass the interrogation."
     ];
 
     // Start the conversation by sequentially displaying the opening messages.
@@ -244,7 +426,7 @@
           addMessage(teddyMessages[index], "teddy", () => {
             index++;
             setTimeout(nextMessage, 800);
-          });
+          }, teddyIcon);
         } else {
           // Begin interactive conversation after greetings.
           askQuestion();
@@ -253,45 +435,24 @@
       nextMessage();
     }
 
-    // Ask the current question from the conversationStages.
-    // function askQuestion() {
-    //   if(conversationStage < conversationStages.length) {
-    //     const question = conversationStages[conversationStage].question;
-    //     addMessage(question, "teddy", () => {
-    //       // Reveal the input area so the user can reply.
-    //       document.getElementById("inputArea").style.display = "flex";
-    //       document.getElementById("userInput").focus();
-    //     });
-    //   } else {
-    //     // Final romantic message when conversation is complete.
-    //     addMessage(finalMessage, "teddy");
-    //     document.getElementById("inputArea").style.display = "none";
-    //   }
-    // }
-
-
-
-
     function askQuestion() {
-  if (conversationStage < conversationStages.length) {
-    const question = conversationStages[conversationStage].question;
-    addMessage(question, "teddy", () => {
-      // Reveal the input area so the user can reply.
-      document.getElementById("inputArea").style.display = "flex";
-      document.getElementById("userInput").focus();
-    });
-  } else {
-    // Final romantic message when conversation is complete.
-        const finalMessage = "Happy teddy Day. . .  from Snuggles 🙈";
-    addMessage(finalMessage, "teddy", () => {
-      // After a short delay, open the modal.
-      setTimeout(showFinalModal, 1000);
-    });
-    document.getElementById("inputArea").style.display = "none";
-  }
-}
-
-
+    if (conversationStage < conversationStages.length) {
+        const question = conversationStages[conversationStage].question;
+        addMessage(question, "teddy", () => {
+        // Reveal the input area so the user can reply.
+        document.getElementById("inputArea").style.display = "flex";
+        document.getElementById("userInput").focus();
+        },teddyIcon);
+    } else {
+        // Final romantic message when conversation is complete.
+            const finalMessage = "Happy teddy Day. . .  from Snuggles 🙈";
+        addMessage(finalMessage, "teddy", () => {
+        // After a short delay, open the modal.
+        setTimeout(showFinalModal, 1000);
+        }, teddyIcon);
+        document.getElementById("inputArea").style.display = "none";
+    }
+    }
 
     // Process the user’s input when the Send button is clicked.
     document.getElementById("sendButton").addEventListener("click", function() {
@@ -300,6 +461,13 @@
       if(text === "") return;
       // Hide the input area while processing.
       document.getElementById("inputArea").style.display = "none";
+
+
+      let currentIcon = userIcon; // Default user icon
+            if (conversationStage === 0 && (text.toLowerCase().includes("sanu") || text.toLowerCase().includes("akriti") || text.toLowerCase().includes("aaku"))) {
+                currentIcon = user1Icon;
+            }
+
       addMessage(text, "user", () => {
         // Evaluate the response using the current conversation stage's logic.
         const reply = conversationStages[conversationStage].reply(text);
@@ -308,38 +476,73 @@
             conversationStage++;
             // Proceed to the next question after a short delay.
             setTimeout(askQuestion, 1000);
-          });
+          }, teddyIcon);
         }, 500);
-      });
+      },currentIcon);
       userInput.value = "";
-    }
-);
+    },user1Icon
+    );
+
+     // Sound Button Logic
+    //  const soundButton = document.getElementById("soundButton");
+    //     soundButton.addEventListener("click", () => {
+    //         soundEnabled = !soundEnabled;
+    //         soundButton.textContent = soundEnabled ? "🔊" : "🔇";
+
+    //         if (soundEnabled) {
+
+    //             if (!isTypingSoundPlaying) {
+    //                 startTypingSound(); // Call startTypingSound to handle play logic
+    //             }
+    //         } else {
+    //             typeSound.pause();
+    //             typeSound.currentTime = 0;
+    //             isTypingSoundPlaying = false;
+    //         }
+    //     });
 
 
-    
+//     const soundButton = document.getElementById("soundButton");
+// soundButton.addEventListener("click", () => {
+//     soundEnabled = !soundEnabled;
+//     soundButton.textContent = soundEnabled ? "🔊" : "🔇";
 
+//     if (!soundEnabled) {
+//         // Only handle stopping the sound when muting
+//         typeSound.pause();
+//         typeSound.currentTime = 0;
+//         isTypingSoundPlaying = false;
+//     }
+//     // Removed the code that tried to start sound here
+// });
+
+  
     // Start the sequence when the page loads.
     window.onload = function() {
       startConversation();
     };
 
     // Function to show the final modal with typewriter text
-function showFinalModal() {
-  const modal = document.getElementById("finalModal");
-  modal.style.display = "block";
-  const finalTextEl = document.getElementById("finalMessage");
-  // 'typeWriter' should already exist in your code; this animates the text "message"
-  typeWriter("I am your love Swikar, sanu, I was just Disguised as Snuggles. Here's your gift. Happy Teddy Day my love ❤️", finalTextEl, 100);
-}
+    function showFinalModal() {
+    const modal = document.getElementById("finalModal");
+    modal.style.display = "block";
+    const finalTextEl = document.getElementById("finalMessage");
+    // 'typeWriter' should already exist in your code; this animates the text "message"
+    if (sanu){
+      typeWriter("I am your love Swikar, sanu, I was just Disguised as Snuggles. Here's your gift. Happy Teddy Day my love ❤️", finalTextEl, 100);
 
-// Close modal when clicking the close button
-document.getElementById("modalClose").addEventListener("click", function() {
-  document.getElementById("finalModal").style.display = "none";
-});
 
-// In your conversation flow, after the final reply, call the modal
-// For example, after displaying the last teddy message, add:
+    }
+    else {
+      typeWriter("I am unsure at the moment, I am sorry to tell you that you are not the one. 🙏🏻👋🏻", finalTextEl, 100);
 
+    }
+    }
+
+    // Close modal when clicking the close button
+    document.getElementById("modalClose").addEventListener("click", function() {
+    document.getElementById("finalModal").style.display = "none";
+    });
 
   </script>
 </body>
