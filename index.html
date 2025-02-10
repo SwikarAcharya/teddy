@@ -347,52 +347,52 @@ soundButton.addEventListener("click", () => {
         const user1Icon = "❤️";
 
     const conversationStages = [
-    // {
-    //         question: "What's your name?, Just give me the name only 📝",
-    //         reply: function(answer) {
-    //             const lower = answer.toLowerCase().trim();
-    //             if (lower==("sanu") || lower==("akriti") || lower==("aaku")) {
-    //               sanu == true;
-    //                 return "Okay you could be the one 🤭 .... or couldn't...";
-    //             } else {
-    //                 return "Hmm, i think there's something here... Anyways let's continue. 😏";
-    //             }
-    //         }
-    //     },
+    {
+            question: "What's your name?, Just give me the name only 📝",
+            reply: function(answer) {
+                const lower = answer.toLowerCase().trim();
+                if (lower==("sanu") || lower==("akriti") || lower==("aaku")) {
+                  sanu == true;
+                    return "Okay you could be the one 🤭 .... or couldn't...";
+                } else {
+                    return "Hmm, i think there's something here... Anyways let's continue. 😏";
+                }
+            }
+        },
 
-    //   {
-    //     question: "Alright, listen up beautiful! Boss has been thinking about this all day… If he were a teddy bear, would you hug him more or tease him more? hug or tease ?",
-    //     reply: function(answer) {
-    //       const lower = answer.toLowerCase();
-    //       if(lower.includes("hug") || lower.includes("tease") ){
-    //         return "I always suspected there was a little magic in you! 🪄";
-    //       } else {
-    //         return "Hmm, Okay i need to take this in account. 😏";
-    //       }
-    //     }
-    //   },
-    //   {
-    //     question: "He wanted to ask this himself, but I had to step in for security reasons. How much do you love my boss, ‘a lot’ or ‘more than anything’ or ‘0’ ?",
-    //     reply: function(answer) {
-    //       const lower = answer.toLowerCase();
-    //       if(lower.includes("lot") || lower.includes("more")){
-    //         return "Got it, Amazing 🙈";
-    //       } else {
-    //         return "I am noting every details. 😕";
-    //       }
-    //     }
-    //   },
-    //   {
-    //     question: "I’ve been in charge of protecting his heart, and  if it’s all yours now. would you keep it safe?, Yes or No",
-    //     reply: function(answer) {
-    //       const lower = answer.toLowerCase();
-    //       if(lower.includes("yes") || lower.includes("safe") || lower.includes("safest")){
-    //         return "Ah, indeed, A final and ultimate test. 🕵🏻";
-    //       } else {
-    //         return "Hmm, Okay... On to the ultimate one. 🤔";
-    //       }
-    //     }
-    //   },
+      {
+        question: "Alright, listen up beautiful! Boss has been thinking about this all day… If he were a teddy bear, would you hug him more or tease him more? hug or tease ?",
+        reply: function(answer) {
+          const lower = answer.toLowerCase();
+          if(lower.includes("hug") || lower.includes("tease") ){
+            return "I always suspected there was a little magic in you! 🪄";
+          } else {
+            return "Hmm, Okay i need to take this in account. 😏";
+          }
+        }
+      },
+      {
+        question: "He wanted to ask this himself, but I had to step in for security reasons. How much do you love my boss, ‘a lot’ or ‘more than anything’ or ‘0’ ?",
+        reply: function(answer) {
+          const lower = answer.toLowerCase();
+          if(lower.includes("lot") || lower.includes("more")){
+            return "Got it, Amazing 🙈";
+          } else {
+            return "I am noting every details. 😕";
+          }
+        }
+      },
+      {
+        question: "I’ve been in charge of protecting his heart, and  if it’s all yours now. would you keep it safe?, Yes or No",
+        reply: function(answer) {
+          const lower = answer.toLowerCase();
+          if(lower.includes("yes") || lower.includes("safe") || lower.includes("safest")){
+            return "Ah, indeed, A final and ultimate test. 🕵🏻";
+          } else {
+            return "Hmm, Okay... On to the ultimate one. 🤔";
+          }
+        }
+      },
       {
         question: "Input any four numbers. 👀",
         reply: function(answer) {
@@ -411,10 +411,10 @@ soundButton.addEventListener("click", () => {
     // Teddy's opening messages (with typewriter animation)
     const teddyMessages = [
       "Hi...",
-      // "I'm Gangstar.. Snuggles, I am my boss's assistant and BODYGUARD",
-      // "I have been deployed by a guy who loves a girl very, very much.",
-      // "I'm here to share smiles, giggles, and a sprinkle of romance with you in his behalf, if and only if you are the right person.",
-      // "But, but, but, you need to pass the interrogation."
+      "I'm Gangstar.. Snuggles, I am my boss's assistant and BODYGUARD",
+      "I have been deployed by a guy who loves a girl very, very much.",
+      "I'm here to share smiles, giggles, and a sprinkle of romance with you in his behalf, if and only if you are the right person.",
+      "But, but, but, you need to pass the interrogation."
     ];
 
     // Start the conversation by sequentially displaying the opening messages.
